@@ -6,4 +6,12 @@ or the browser is closed and reopened, the storage is saved. There is no expirat
 SessionStorage: SessionStorage is cleared when the page session ends. A page session lasts as long as the tab or the
 browser is open. Therefore, when you open a new tab or a new window, this creates a new session and new storage.
 
-2.
+2. Difference between global scope and local scope.
+
+Global scope: The Global scope. A variable exists inside or outside a block. If a variable is declared outside all
+functions or curly braces ({}), it exists in the global scope. Global variables are useful for values that are
+relatively constant, or that many functions in the script must access, such as a session id.
+
+Local scope: A block is a piece of code inside a set of curly braces {} and groups code statements together. An example
+of a block could be a function. A local variable, however, has a limited scope: it exists only within the block that it
+is declared in. Once that block ends, the variable is destroyed and its values lost .
