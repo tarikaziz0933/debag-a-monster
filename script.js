@@ -18,6 +18,7 @@ const displayQues = () => {
     .then((data) => {
       questionText = data[Math.floor(Math.random() * data.length)];
       question.innerHTML = questionText;
+      // console.log(data);
     });
 }
 
@@ -47,6 +48,7 @@ const typeController = (e) => {
   if (newLetterCorrect) {
     display.innerHTML += `<span class="green">${newLetter === " " ? "▪" : newLetter}</span>`;
   } else {
+    errorCount += 1;
     display.innerHTML += `<span class="red">${newLetter === " " ? "▪" : newLetter}</span>`;
   }
 
