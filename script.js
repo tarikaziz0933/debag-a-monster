@@ -1,6 +1,6 @@
 const display = document.getElementById("display");
 const question = document.getElementById("question");
-const startBtn = document.getElementById("start");
+const startBtn = document.getElementById("starts");
 const countdownOverlay = document.getElementById("countdown");
 const resultModal = document.getElementById("result");
 const modalBackground = document.getElementById("modal-background");
@@ -8,16 +8,18 @@ const modalBackground = document.getElementById("modal-background");
 // variables
 let userText = "";
 let errorCount = 0;
-let startTime;
+let startTime = 0;
 let questionText = "";
 
 // Load and display question
-fetch("./texts.json")
-  .then((res) => res.json())
-  .then((data) => {
-    questionText = data[Math.floor(Math.random() * data.length)];
-    question.innerHTML = questionText;
-  });
+const displayQues = () => {
+  fetch("./texts.json")
+    .then((res) => res.json())
+    .then((data) => {
+      questionText = data[Math.floor(Math.random() * data.length)];
+      question.innerHTML = questionText;
+    });
+}
 
 // checks the user typed character and displays accordingly
 const typeController = (e) => {
@@ -78,11 +80,14 @@ const gameOver = () => {
   // make it inactive
   display.classList.add("inactive");
   // show result
+  // resultModal.classList.add(result);
   resultModal.innerHTML += `
+    <div class="">
     <h1>Finished!</h1>
     <p>You took: <span class="bold">${timeTaken}</span> seconds</p>
     <p>You made <span class="bold red">${errorCount}</span> mistakes</p>
     <button onclick="closeModal()">Close</button>
+    </div>
   `;
 
   addHistory(questionText, timeTaken, errorCount);
@@ -97,6 +102,8 @@ const gameOver = () => {
 const closeModal = () => {
   modalBackground.classList.toggle("hidden");
   resultModal.classList.toggle("hidden");
+  displayQues();
+  // count = 3;
 };
 
 const start = () => {
@@ -104,30 +111,41 @@ const start = () => {
   if (startTime) return;
 
   let count = 3;
-  countdownOverlay.style.display = "flex";
 
   const startCountdown = setInterval(() => {
-    countdownOverlay.innerHTML = '<h1>${count}</h1>';
+    // if (count != 0) {
+    // }
+    console.log(count);
+    countdownOverlay.innerHTML = `<h1>${count}</h1>`;
+    countdownOverlay.style.display = "flex";
 
     // finished timer
     if (count == 0) {
       // -------------- START TYPING -----------------
+      // countdownOverlay.innerHTML = `<h1>${count}</h1>`;
       document.addEventListener("keydown", typeController);
-      countdownOverlay.style.display = "flex";
       display.classList.remove("inactive");
-
+      countdownOverlay.style.display = "none";
       clearInterval(startCountdown);
+
+
       startTime = new Date().getTime();
+      // console.log(count);
     }
-    count--;
+    else {
+      count--;
+    }
   }, 1000);
 };
 
 // START Countdown
-startBtn.addEventListener("click", start);
+startBtn.addEventListener('click', start);
 
 // If history exists, show it
 displayHistory();
+
+//Display Question
+displayQues();
 
 // Show typing time spent
 setInterval(() => {
